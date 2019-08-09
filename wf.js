@@ -88,6 +88,14 @@ function exit () {
   process.exit()
 }
 
+function apply_alias(id) {
+  if (id != undefined && !id.match("/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i")) {
+    // id not uuid, used alias
+    return aliases[id]
+  }
+  return id
+}
+
 var regex = {
   sessionid: /sessionid: (\w+)/
 }
@@ -108,7 +116,7 @@ if (argv.help) {
     if (!telegramoutput) {
       console.log("• • • creating workflowy node • • •")
     }
-    var parentid = argv.parentid
+    var parentid = apply_alias(argv.parentid)
     var priority = argv.priority
     var name = argv.name
     var note = argv.note
@@ -122,15 +130,10 @@ if (argv.help) {
       console.log("• • • fetching workflowy tree • • •")
     }
     depth = argv.depth || argv._[1] || 2
-    id = argv.id
+    id = apply_alias(argv.id)
     withnote = argv.withnote
     hiddencompleted = argv.hiddencompleted
     withid = argv.withid
-
-    if (!id.match("/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i")) {
-      // id not uuid, used alias
-      id = aliases[id]
-    }
 
     if (id) {
       wf.nodes.then(function (nodes) {
