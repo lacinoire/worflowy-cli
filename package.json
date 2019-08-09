@@ -1,6 +1,6 @@
 {
   "name": "workflowy-cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "CLI Client for Workflowy",
   "main": "index.js",
   "scripts": {
