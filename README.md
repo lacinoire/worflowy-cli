@@ -1,4 +1,13 @@
+# Workflowy CLI client
+
+Add / inspect your [Workflowy](https://workflowy.com/) on the command line ✌🏼
+
+Extension to [`ruix/workflowy`](https://github.com/ruxi/workflowy) and [`opusfluxus`](https://github.com/malcolmocean/opusfluxus) with the possibility to define aliases for nodes → easier access without remembering IDs 😄
+
+Used in my [`Workflowy Telegram bot`](https://github.com/lacinoire/workflowy-tg-bot).
+
 # opusfluxus
+
 NodeJS wrapper for WorkFlowy. Created for integration with [Complice](https://complice.co), a productivity app that's less "what are all the parts of this thing I have to do?" and more ***"what am I going to do today?"***
 
 This is super early stage! Currently the main advantages it has over [the original](https://github.com/ruxi/workflowy) are:
