@@ -6,6 +6,37 @@ Extension to [`ruix/workflowy`](https://github.com/ruxi/workflowy) and [`opusflu
 
 Used in my [`Workflowy Telegram bot`](https://github.com/lacinoire/workflowy-tg-bot).
 
+```
+usage: wf <command> [<args>]
+
+The commands currently available are:
+
+ tree n                     print your workflowy nodes up to depth n (default: 2)
+   [--id=<id/alias>]           print sub nodes under the <id> (default: whole tree)
+   [--withnote]                print the note of nodes (default: false)
+   [--hiddencompleted]         hide the completed lists (default: false)
+   [--withid]                  print id of nodes (default: false)
+
+ add                        add something to a particular node
+    --parentid=<id/alias>       36-digit uuid of parent (required) or defined alias
+    --text=<str>                what to actually put on the node (required)
+   [--priority=#]               0 as first child, 1 as second (default 0 (top))
+                                    (use a number like 10000 for bottom)
+   [--note=<str>]               a note for the node (default '')
+
+ alias                      list all curretnly defined aliases
+
+ alias add                  add new alias
+    --id=<id>                   36-digit uuid to alias (required)
+    --name=<alias>              name to give the alias (required)
+
+ alias remove               remove existing alias
+    --name=<str>                name to give the alias (required)
+
+ common options             options to use on all commands
+    [--telegramoutput]         format output to use in telegram bot
+```
+
 # opusfluxus
 
 NodeJS wrapper for WorkFlowy. Created for integration with [Complice](https://complice.co), a productivity app that's less "what are all the parts of this thing I have to do?" and more ***"what am I going to do today?"***
