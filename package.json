@@ -1,28 +1,31 @@
 {
-  "name": "opusfluxus",
-  "version": "0.4.3",
-  "description": "NodeJS wrapper for Workflowy (+ terminal client)",
+  "name": "workflowy-cli",
+  "version": "0.0.1",
+  "description": "CLI Client for Workflowy",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/malcolmocean/opusfluxus.git"
+    "url": "https://github.com/lacinoire/worflowy-cli.git"
   },
   "keywords": [
     "workflowy",
     "workflowyjs",
-    "opusfluxus",
-    "api"
+    "workflowycli",
+    "api",
+    "cli"
   ],
-  "author": "Malcolm Ocean <malcolm@malcolmocean.com> (http://malcolmocean.com/)",
+  "author": "Carolin Brandt <carolin.brandt@tum.de",
   "contributors": [
-    "Mike Robertson"
+    "Mike Robertson",
+    "Malcolm Ocean <malcolm@malcolmocean.com> (http://malcolmocean.com/)",
+    "Su, Jun-Ming (https://github.com/sujunmin)"
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/malcolmocean/opusfluxus/issues"
+    "url": "https://github.com/lacinoire/worflowy-cli/issues"
   },
   "dependencies": {
     "minimist": "^1.1.0",
