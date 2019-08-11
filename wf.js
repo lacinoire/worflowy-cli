@@ -9,7 +9,6 @@ var argv = require('minimist')(process.argv.slice(2))
 
 var userhome = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME']
 var rc_path = userhome+"/.wfrc"
-var aliases = require('./aliases.json')
 
 var exists = fs.existsSync(rc_path)
 var rc = exists && fs.readFileSync(rc_path, 'utf8')
@@ -25,6 +24,30 @@ function handleErr(reason) {
   }
 }
 
+function loadAliases() {
+  try {
+    fs.writeFileSync('./aliases.json', '{}', { flag: 'wx' }, function (err) {
+      if (err) console.log('err')
+      console.log("It's saved!");
+    });
+  } catch (err) {}
+  const aliases = fs.readFileSync('./aliases.json', 'utf8')
+  try {
+    return JSON.parse(aliases)
+  } catch(err) {
+    console.log('Error parsing JSON string:', err)
+    return {}
+  }
+}
+
+function writeAliases() {
+  fs.writeFileSync('./aliases.json', JSON.stringify(aliases), err => {
+    if (err) {
+        console.log('Could not write alias file.', err)
+    }
+  })
+}
+
 function printHelp () {
   console.log("usage: wf <command> [<args>]\n")
   console.log("The commands currently available are:\n")
@@ -34,10 +57,10 @@ function printHelp () {
   console.log("   [--hiddencompleted]         "+"hide the completed lists (default: false)")
   console.log("   [--withid]                  "+"print id of nodes (default: false)")
   console.log("")
-  console.log(" add                        "+"add something to a particular node")
+  console.log(" capture                    "+"add something to a particular node")
   console.log("    --parentid=<id/alias>       "+"36-digit uuid of parent (required) or defined alias")
-  console.log("    --text=<str>                "+"what to actually put on the node (required)")
-  console.log("   [--priority=#]               "+"0 as first child, 1 as second (default 0 (top))")
+  console.log("    --name=<str>                "+"what to actually put on the node (required)")
+  console.log("   [--priority=<int>]               "+"0 as first child, 1 as second (default 0 (top))")
   console.log("                                "+"    (use a number like 10000 for bottom)")
   console.log("   [--note=<str>]               "+"a note for the node (default '')")
   console.log("")
@@ -61,6 +84,7 @@ var withid = false
 var id = null
 var telegramoutput = false
 telegramoutput = argv.telegramoutput != undefined
+var aliases = loadAliases()
 
 function recursivePrint (node, prefix, spaces, maxDepth) {
   if (hiddencompleted && node.cp) {return}
@@ -159,21 +183,25 @@ if (argv.help) {
   } else if (command === 'alias') {
 
     verb = argv._[1]
+    if (aliases === undefined) {
+      aliases = loadAliases()
+      console.log(aliases)
+      if (aliases === undefined) {
+        aliases = {}
+      }
+    }
 
     if (verb === 'add') {
       aliases[argv.name] = argv.id
-      fs.writeFile('./aliases.json', JSON.stringify(aliases), err => {
-        if (err) {
-            console.log('Could not write alias file.', err)
-        } else {
-            console.log('Added alias successfully!')
-        }
-      })
+      writeAliases()
     } else if (verb === 'remove') {
       delete aliases[argv.name]
+      writeAliases()
     } else {
       console.log(aliases)
     }
+    exit()
+
   } else {
 
     if (!telegramoutput) {

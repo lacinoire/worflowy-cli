@@ -1,6 +1,6 @@
 {
   "name": "workflowy-cli",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "CLI Client for Workflowy",
   "main": "index.js",
   "scripts": {
@@ -36,5 +36,8 @@
   },
   "bin": {
     "wf": "wf.js"
-  }
+  },
+  "files": [
+    "aliases.json"
+  ]
 }
