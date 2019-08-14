@@ -135,7 +135,7 @@ if (argv.help) {
   var wf = new Workflowy({sessionid: sessionid})
 
   var command = argv._[0]
-  if (command === 'add') {
+  if (command === 'capture') {
 
     if (!telegramoutput) {
       console.log("• • • creating workflowy node • • •")
@@ -194,9 +194,11 @@ if (argv.help) {
     if (verb === 'add') {
       aliases[argv.name] = argv.id
       writeAliases()
+      console.log("Added new alias '" + argv.name + "' for id '" + argv.id + "'")
     } else if (verb === 'remove') {
       delete aliases[argv.name]
       writeAliases()
+      console.log("Removed alias for name '" + argv.name + "'")
     } else {
       console.log(aliases)
     }
