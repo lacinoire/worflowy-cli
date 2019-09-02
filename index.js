@@ -102,6 +102,7 @@ module.exports = Workflowy = (function() {
     } else {
       this.meta = this._login.then(meta(this))
     }
+
     this.outline = this.meta.then((function(_this) {
       return function(body) {
         var meta
@@ -110,6 +111,7 @@ module.exports = Workflowy = (function() {
         return meta.rootProjectChildren
       }
     })(this))
+
     return this.nodes = this.outline.then((function(_this) {
       return function(outline) {
         var addChildren, result
@@ -121,6 +123,7 @@ module.exports = Workflowy = (function() {
             child = arr[j]
             child.parentId = parentId
             child.pcp = parentCompleted
+            child.prio = j
             if (children = child.ch) {
               addChildren(children, child.id, child.cp || child.pcp)
             }
@@ -231,7 +234,7 @@ module.exports = Workflowy = (function() {
           undo_data: {
             previous_last_modified: node.lm,
             parentid: node.parentId,
-            priority: 5
+            priority: node.prio
           }
         })
       }
@@ -245,6 +248,8 @@ module.exports = Workflowy = (function() {
   }
 
   Workflowy.prototype.complete = function(nodes, tf) {
+    console.log(nodes)
+    console.log(tf)
     var node, operations
     if (tf == null) {
       tf = true
@@ -268,15 +273,18 @@ module.exports = Workflowy = (function() {
           }
         })
       }
+      console.log(results)
       return results
     })()
     return this._update(operations).then((function(_this) {
+      console.log(_this)
       return function(arg) {
         var body, i, j, len, resp, timestamp
         resp = arg[0], body = arg[1], timestamp = arg[2]
         for (i = j = 0, len = nodes.length; j < len; i = ++j) {
           node = nodes[i]
           if (tf) {
+            console.log(timestamp)
             node.cp = timestamp
           } else {
             delete node.cp
@@ -350,6 +358,31 @@ module.exports = Workflowy = (function() {
           node.nm = newNames[i]
           node.lm = timestamp
         }
+      }
+    })(this))
+  }
+
+  Workflowy.prototype.move = function(node, newParentid, priority) {
+    var operations = [
+      {
+        type: 'move',
+        data: {
+          projectid: node.id,
+          parentid: newParentid,
+          priority: priority
+        },
+        undo_data: {
+          previous_parentid: node.parentId,
+          previous_priority: node.prio
+        }
+      }
+    ]
+    return this._update(operations)
+    .then(utils.httpAbove299toError)
+    .then((function(_this) {
+      return function(arg) {
+        // TODO: for a local workflowy client
+        //       we'll want to update the local node
       }
     })(this))
   }
